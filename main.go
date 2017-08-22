@@ -15,10 +15,10 @@ import (
 func main() {
 
 	// LETTURA DEI PARAMETRI APPLICAZIONE
-	dir := flag.String("dir", ".", "directory")
-	out := flag.String("out", "../img-resized", "directory output")
-	dim := flag.Uint("squareDim", 1024, "image dimensione")
-	thumbDim := flag.Uint("thumbDim", 200, "image dimensione")
+	dir      := flag.String("dir", ".", "directory to be monitored")
+	out      := flag.String("out", "../img-resized", "directory output")
+	dim      := flag.Uint  ("dim", 1024, "image dimension")
+	thumbDim := flag.Uint  ("thumbDim", 200, "square thumbnail dimension")
 	flag.Parse()
 
 
@@ -38,7 +38,7 @@ func main() {
 			case ev := <-watcher.Event:
 				log.Println("event:", ev)
 				if ev.IsCreate() {
-					log.Println("nuovo file", ev.Name)
+					log.Println("new file", ev.Name)
 					ImageManipulate(ev.Name, *out, *dim, renamer("_s"), toNewSize());
 					ImageManipulate(ev.Name, *out, *thumbDim, renamer("_t"), toSquare() );
 				}
@@ -104,7 +104,6 @@ func ReadImageFromFileSystem( fileName string) (image.Image, error) {
 	file.Close()
 	return img, err
 }
-
 
 
 func ImageManipulate( fileName string, outDir string, dim uint, renamer renamerType, operation imgTransform) {
