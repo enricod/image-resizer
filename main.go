@@ -86,7 +86,11 @@ func toNewSize() imgTransform {
 
 func renamer( postfix string ) renamerType {
 	return func(filename string) string {
-		return strings.Replace(filename, ".jpg",  postfix + ".jpg", 1)
+		if strings.HasPrefix(filename, ".jpg") {
+			return strings.Replace(filename, ".jpg", postfix+".jpg", 1)
+		} else {
+			return filename + postfix
+		}
 	}
 }
 
